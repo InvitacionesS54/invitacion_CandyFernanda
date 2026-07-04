@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>XV Años · Candy Fernanda</title>
+
+<!-- Google Fonts: Playfair Display (títulos) + Montserrat (texto) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Cormorant+Garamond:ital@1&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- FontAwesome (solo para iconografía, sin emojis) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+  /* ============================================================
+     TOKENS — Bosque Encantado
+     ============================================================ */
+  :root{
+    --forest-deep:   #14241a;   /* fondo principal, casi negro-verde */
+    --forest-mid:    #24402e;   /* verde bosque */
+    --moss:          #4f6b4a;   /* verde musgo */
+    --moss-soft:     #7c9473;   /* verde musgo claro, para texto secundario sobre oscuro */
+    --gold:          #c8a86a;   /* dorado sutil */
+    --gold-soft:     #e8d9b5;   /* dorado muy claro, casi crema */
+    --cream:         #f3ecd9;   /* beige elegante */
+    --cream-dim:     #e7dcc0;
+    --ink:           #10190f;
+
+    --font-display: 'Playfair Display', serif;
+    --font-script:  'Cormorant Garamond', serif;
+    --font-body:    'Montserrat', sans-serif;
+
+    --radius: 2px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--forest-deep);
+    color:var(--cream);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+  }
+
+  /* ============================================================
+     PARTÍCULAS — hojas cayendo (fondo ambiental global)
+     ============================================================ */
+  #leaf-canvas{
+    position:fixed; inset:0; width:100%; height:100%;
+    pointer-events:none; z-index:5; opacity:.85;
+  }
+
+  /* ============================================================
+     INTRO / VIDEO OVERLAY
+     ============================================================ */
+  #intro-overlay{
+    position:fixed; inset:0; z-index:1000;
+    background:var(--ink);
+    display:flex; align-items:center; justify-content:center;
+    transition:opacity 1.1s var(--ease), visibility 1.1s var(--ease);
+  }
+  #intro-overlay.hidden{ opacity:0; visibility:hidden; pointer-events:none; }
+
+  #intro-video{
+    position:absolute; inset:0; width:100%; height:100%;
+    object-fit:cover; opacity:.55;
+  }
+  .intro-scrim{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at center, rgba(20,36,26,.35) 0%, rgba(16,25,15,.92) 78%),
+      linear-gradient(180deg, rgba(16,25,15,.55) 0%, rgba(16,25,15,.75) 100%);
+  }
+  .intro-content{
+    position:relative; z-index:2; text-align:center; padding:0 1.5rem;
+    display:flex; flex-direction:column; align-items:center; gap:1.6rem;
+  }
+  .intro-eyebrow{
+    font-family:var(--font-body); letter-spacing:.42em; text-transform:uppercase;
+    font-size:.66rem; color:var(--gold); font-weight:500;
+  }
+  .intro-title{
+    font-family:var(--font-display); font-style:italic; font-weight:500;
+    font-size:clamp(2.4rem, 9vw, 4rem); color:var(--gold-soft);
+    line-height:1.1;
+  }
+  .intro-sub{
+    font-family:var(--font-script); font-style:italic; font-size:1.3rem; color:var(--moss-soft);
+  }
+  .enter-btn{
+    margin-top:1rem;
+    border:1px solid var(--gold);
+    color:var(--gold-soft);
+    padding:.95rem 2.6rem;
+    font-size:.72rem;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    background:rgba(200,168,106,.06);
+    transition:background .4s var(--ease), color .4s var(--ease), letter-spacing .4s var(--ease);
+    position:relative;
+  }
+  .enter-btn:hover{ background:var(--gold); color:var(--ink); letter-spacing:.36em; }
+  .intro-hint{ font-size:.62rem; letter-spacing:.18em; color:var(--moss-soft); text-transform:uppercase; opacity:.8;}
+
+  /* ============================================================
+     LAYOUT GENERAL
+     ============================================================ */
+  main{ position:relative; z-index:2; }
+
+  .section{
+    position:relative;
+    padding:6.5rem 1.6rem;
+    max-width:640px;
+    margin:0 auto;
+    text-align:center;
+  }
+
+  .section-forest-texture{
+    background:
+      radial-gradient(ellipse 90% 60% at 50% 0%, rgba(79,107,74,.16), transparent 60%),
+      var(--forest-deep);
+  }
+
+  .divider{
+    width:1px; height:56px; margin:0 auto 2rem;
+    background:linear-gradient(180deg, transparent, var(--gold) 40%, transparent);
+  }
+
+  .eyebrow{
+    font-size:.64rem; letter-spacing:.4em; text-transform:uppercase;
+    color:var(--gold); font-weight:500; margin-bottom:1.1rem;
+  }
+
+  .reveal{
+    opacity:0; transform:translateY(28px);
+    transition:opacity 1s var(--ease), transform 1s var(--ease);
+  }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+
+  /* botanical corner ornament, reused as a signature motif */
+  .branch{
+    position:absolute; width:120px; height:120px; opacity:.55; pointer-events:none;
+  }
+  .branch svg{ width:100%; height:100%; }
+  .branch.tl{ top:10px; left:6px; }
+  .branch.br{ bottom:10px; right:6px; transform:rotate(180deg); }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero{
+    min-height:100svh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:7rem 1.6rem 5rem;
+    text-align:center;
+    position:relative;
+    background:
+      radial-gradient(ellipse 120% 80% at 50% 8%, rgba(79,107,74,.28), transparent 55%),
+      linear-gradient(180deg, var(--forest-deep) 0%, var(--forest-deep) 100%);
+    overflow:hidden;
+  }
+  .hero-bg-photo{
+    position:absolute; inset:0;
+    background-size:cover; background-position:center 20%;
+    opacity:.22; filter:saturate(.7) contrast(1.05);
+  }
+  .hero-vignette{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 45%, transparent 30%, var(--forest-deep) 88%),
+      linear-gradient(180deg, var(--forest-deep) 0%, transparent 22%, transparent 70%, var(--forest-deep) 100%);
+  }
+  .hero-inner{ position:relative; z-index:2; max-width:520px; }
+  .hero-eyebrow{
+    font-size:.68rem; letter-spacing:.5em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:1.8rem; font-weight:500;
+  }
+  .hero-name{
+    font-family:var(--font-display); font-weight:600;
+    font-size:clamp(2.6rem, 11vw, 4.4rem);
+    line-height:1.05; color:var(--cream);
+    text-shadow:0 2px 24px rgba(0,0,0,.4);
+  }
+  .hero-name em{ font-style:italic; color:var(--gold-soft); display:block; font-weight:500; }
+  .hero-xv{
+    margin-top:1.6rem;
+    font-family:var(--font-script); font-style:italic;
+    font-size:1.65rem; color:var(--moss-soft);
+    letter-spacing:.02em;
+  }
+  .hero-date-pill{
+    margin-top:2.6rem;
+    display:inline-flex; align-items:center; gap:.6rem;
+    border-top:1px solid rgba(200,168,106,.4);
+    border-bottom:1px solid rgba(200,168,106,.4);
+    padding:.8rem 1.6rem;
+    font-size:.78rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--gold-soft);
+  }
+  .scroll-cue{
+    position:absolute; bottom:2.2rem; left:50%; transform:translateX(-50%);
+    font-size:.6rem; letter-spacing:.3em; text-transform:uppercase; color:var(--moss-soft);
+    display:flex; flex-direction:column; align-items:center; gap:.5rem;
+  }
+  .scroll-cue .line{ width:1px; height:34px; background:var(--gold); animation:scrollpulse 2s ease-in-out infinite; }
+  @keyframes scrollpulse{ 0%,100%{opacity:.25; transform:scaleY(.6);} 50%{opacity:1; transform:scaleY(1);} }
+
+  /* ============================================================
+   MEJORAS VISUALES PREMIUM (Nuevos Estilos)
+   ============================================================ */
+
+/* Contenedor y Título de "Mis Padres" */
+.parents-container {
+  margin-top: 2.5rem;
+  position: relative;
+}
+
+.parents-title {
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--moss-soft);
+  margin-bottom: 1.2rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* Pequeñas líneas elegantes a los lados de "Mis Padres" */
+.parents-title::before,
+.parents-title::after {
+  content: '';
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--moss));
+}
+.parents-title::after {
+  background: linear-gradient(90deg, var(--moss), transparent);
+}
+
+/* Nombres de los padres más notorios */
+.parents {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.parent-name {
+  font-family: var(--font-display);
+  font-size: 1.4rem; /* Aumentado para mayor impacto */
+  letter-spacing: 0.03em;
+  color: var(--gold-soft);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  font-weight: 500;
+}
+
+.parent-and {
+  font-family: var(--font-script);
+  font-style: italic;
+  color: var(--gold);
+  font-size: 1.3rem;
+  opacity: 0.8;
+  margin: 2px 0;
+}
+
+/* Animación Premium para las Tarjetas del Evento (Hover) */
+.event-card {
+  transition: transform 0.4s var(--ease), border-color 0.4s var(--ease), box-shadow 0.4s var(--ease);
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(200, 168, 106, 0.6);
+  box-shadow: 0 12px 30px rgba(20, 36, 26, 0.5), inset 0 0 20px rgba(200, 168, 106, 0.05);
+}
+
+/* Suavizado dinámico al revelar elementos con scroll */
+.reveal {
+  will-change: transform, opacity;
+}
+
+  /* ============================================================
+     COUNTDOWN
+     ============================================================ */
+  .countdown-title{
+    font-family:var(--font-display); font-style:italic; font-weight:500;
+    font-size:1.6rem; color:var(--gold-soft); margin-bottom:2.4rem;
+  }
+  .countdown{
+    display:grid; grid-template-columns:repeat(4,1fr);
+    gap:.7rem; max-width:440px; margin:0 auto;
+  }
+  .count-box{
+    border:1px solid rgba(200,168,106,.35);
+    padding:1.1rem .3rem 1rem;
+    background:linear-gradient(160deg, rgba(79,107,74,.14), rgba(20,36,26,.3));
+    position:relative;
+  }
+  .count-box::before{
+    content:''; position:absolute; inset:5px;
+    border:1px solid rgba(200,168,106,.15);
+    pointer-events:none;
+  }
+  .count-num{
+    font-family:var(--font-display); font-weight:600;
+    font-size:clamp(1.6rem, 6vw, 2.3rem); color:var(--gold);
+    line-height:1;
+  }
+  .count-label{
+    margin-top:.5rem; font-size:.6rem; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--moss-soft);
+  }
+
+  /* ============================================================
+     DETALLES DEL EVENTO
+     ============================================================ */
+  .event-cards{ display:flex; flex-direction:column; gap:1.4rem; margin-top:1rem; }
+  .event-card{
+    border:1px solid rgba(200,168,106,.25);
+    background:linear-gradient(160deg, rgba(79,107,74,.1), rgba(20,36,26,.4));
+    padding:2.1rem 1.6rem;
+    text-align:center;
+  }
+  .event-icon{
+    width:42px; height:42px; margin:0 auto 1.1rem;
+    color:var(--gold); font-size:1.5rem;
+    display:flex; align-items:center; justify-content:center;
+    border:1px solid var(--gold); border-radius:50%;
+  }
+  .event-name{
+    font-family:var(--font-display); font-size:1.35rem; color:var(--gold-soft); margin-bottom:.4rem;
+  }
+  .event-time{
+    font-size:.8rem; letter-spacing:.1em; text-transform:uppercase; color:var(--moss-soft); margin-bottom:.9rem;
+  }
+  .event-place{
+    font-family:var(--font-script); font-style:italic; font-size:1.15rem; color:var(--cream-dim); line-height:1.5;
+  }
+  .event-note{
+    margin-top:.9rem; font-size:.72rem; color:var(--moss-soft); font-style:italic;
+  }
+
+  /* Puntualidad */
+  .punct-block{
+    margin-top:1.8rem;
+    border-left:2px solid var(--gold);
+    padding:1rem 1.3rem;
+    text-align:left;
+    background:rgba(79,107,74,.08);
+    font-size:.83rem; line-height:1.7; color:var(--cream-dim);
+  }
+  .punct-block i{ color:var(--gold); margin-right:.5rem; }
+
+  /* ============================================================
+     VESTIMENTA
+     ============================================================ */
+  .dress-icon{ font-size:2rem; color:var(--gold); margin-bottom:1.2rem; }
+  .dress-text{
+    font-size:.95rem; line-height:1.8; color:var(--cream-dim); max-width:420px; margin:0 auto;
+  }
+  .dress-highlight{
+    margin-top:1.6rem;
+    display:inline-block;
+    padding:.9rem 1.6rem;
+    border:1px solid var(--moss);
+    background:rgba(79,107,74,.18);
+    font-family:var(--font-script); font-style:italic;
+    color:var(--gold-soft); font-size:1.1rem;
+  }
+  .swatches{ display:flex; justify-content:center; gap:.6rem; margin-top:1.6rem; }
+  .swatch{ width:22px; height:22px; border-radius:50%; border:1px solid rgba(200,168,106,.5); }
+
+  /* ============================================================
+     GALERÍA
+     ============================================================ */
+  .gallery-grid{
+    display:grid; grid-template-columns:repeat(2,1fr);
+    gap:.6rem; margin-top:1rem;
+  }
+  .gallery-grid img{
+    width:100%; height:100%; object-fit:cover; aspect-ratio:3/4;
+    filter:saturate(.85) contrast(1.02);
+    transition:transform .6s var(--ease), filter .6s var(--ease);
+  }
+  .gallery-item{ overflow:hidden; border:1px solid rgba(200,168,106,.2); }
+  .gallery-item:nth-child(3n+1){ grid-row:span 2; aspect-ratio:auto; }
+  .gallery-item:nth-child(3n+1) img{ aspect-ratio:auto; height:100%; }
+  .gallery-item:active img{ transform:scale(1.06); }
+  @media(hover:hover){ .gallery-item:hover img{ transform:scale(1.06); filter:saturate(1) contrast(1.05); } }
+
+  /* ============================================================
+     REGALOS
+     ============================================================ */
+  .gift-icon{ font-size:2.1rem; color:var(--gold); margin-bottom:1.3rem; }
+  .gift-text{ font-size:.92rem; line-height:1.8; color:var(--cream-dim); max-width:400px; margin:0 auto; }
+  .gift-phrase{
+    margin-top:1.4rem; font-family:var(--font-script); font-style:italic; font-size:1.25rem; color:var(--gold-soft);
+  }
+
+  /* ============================================================
+     RSVP
+     ============================================================ */
+  .rsvp-deadline{
+    font-size:.78rem; letter-spacing:.06em; color:var(--moss-soft); margin-bottom:2rem;
+  }
+  .rsvp-deadline strong{ color:var(--gold-soft); font-weight:600; }
+  .whatsapp-btn{
+    display:inline-flex; align-items:center; gap:.7rem;
+    padding:1.1rem 2.4rem;
+    background:linear-gradient(160deg, var(--moss), var(--forest-mid));
+    border:1px solid var(--gold);
+    color:var(--gold-soft);
+    font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; font-weight:500;
+    transition:transform .35s var(--ease), box-shadow .35s var(--ease);
+    box-shadow:0 8px 30px -12px rgba(0,0,0,.6);
+  }
+  .whatsapp-btn i{ font-size:1.1rem; }
+  .whatsapp-btn:hover{ transform:translateY(-3px); box-shadow:0 14px 34px -12px rgba(0,0,0,.7); }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer{
+    padding:4.5rem 1.6rem 3rem; text-align:center;
+    border-top:1px solid rgba(200,168,106,.15);
+  }
+  .footer-name{ font-family:var(--font-script); font-style:italic; font-size:1.6rem; color:var(--gold-soft); }
+  .footer-sub{ margin-top:.6rem; font-size:.62rem; letter-spacing:.3em; text-transform:uppercase; color:var(--moss-soft); }
+
+  /* section titles shared */
+  .section-title{
+    font-family:var(--font-display); font-style:italic; font-weight:500;
+    font-size:clamp(1.7rem, 6vw, 2.1rem); color:var(--gold-soft);
+    margin-bottom:1.4rem;
+  }
+
+  @media (min-width:640px){
+    .section{ padding:8rem 2rem; }
+  }
+
+  .btn-location {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Espacio entre el icono de mapa y el texto */
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: 1px solid #d4af37; /* El tono dorado de tu diseño */
+  color: #d4af37;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif; /* O la tipografía secundaria que uses */
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+/* Efecto al pasar el mouse (o mantener pulsado en móvil) */
+.btn-location:hover {
+  background-color: #d4af37;
+  color: #1a3322; /* Cambia esto por el tono de verde oscuro de tu fondo para que contraste */
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+}
+
+/* Estilo para el icono SVG dentro del botón */
+.btn-location svg {
+  transition: transform 0.3s ease;
+}
+
+.btn-location:hover svg {
+  transform: translateY(-2px); /* Un pequeño brinquito estético del pin de mapa */
+}
+
+/* ==================================================================
+   4. BOTÓN FLOTANTE DE MÚSICA
+================================================================== */
+#music-toggle{
+  position:fixed;
+  bottom: 22px; right: 22px;
+  z-index: 500;
+  width:52px; height:52px;
+  border-radius:50%;
+  border: 1px solid var(--gold);
+  background: rgba(10,28,18,0.75);
+  backdrop-filter: blur(8px);
+  color: var(--gold-soft);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem;
+  cursor:pointer;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+#music-toggle:hover{ transform: scale(1.08); box-shadow: 0 10px 30px rgba(205,168,102,0.35); }
+#music-toggle.playing i{ animation: spin-slow 5s linear infinite; }
+@keyframes spin-slow{ from{ transform:rotate(0);} to{ transform:rotate(360deg);} }
+
+
+/* ============================================================
+   ESTILOS DEL LIGHTBOX (Galería interactiva)
+   ============================================================ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000; /* Por encima de todo, incluso del menú */
+  background-color: rgba(16, 25, 15, 0.95); /* Fondo bosque oscuro profundo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s var(--ease), visibility 0.4s var(--ease);
+  padding: 1.5rem;
+}
+
+/* Cuando el lightbox esté activo */
+.lightbox.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(200, 168, 106, 0.2); /* Borde dorado sutil */
+  transform: scale(0.95);
+  transition: transform 0.4s var(--ease);
+}
+
+.lightbox.active .lightbox-img {
+  transform: scale(1);
+}
+
+/* Botón elegante para cerrar */
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  color: var(--gold-soft);
+  font-size: 2.5rem;
+  line-height: 1;
+  font-family: Arial, sans-serif;
+  transition: color 0.3s ease, transform 0.3s ease;
+  z-index: 2001;
+}
+
+.lightbox-close:hover {
+  color: var(--cream);
+  transform: scale(1.1);
+}
+
+/* cursor de lupa para indicar que las fotos de la galería son clickables */
+.gallery-item {
+  cursor: zoom-in;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PARTÍCULAS DE FONDO (hojas cayendo) — canvas global
+     ============================================================ -->
+<canvas id="leaf-canvas"></canvas>
+
+<!-- ============================================================
+     INTRO / PANTALLA DE BIENVENIDA CON VIDEO
+     ============================================================ -->
+<div id="intro-overlay">
+  <!-- REEMPLAZAR AQUÍ TU VIDEO: coloca la ruta de tu video (mp4) en el atributo src -->
+  <video id="intro-video" autoplay muted playsinline preload="auto">
+    <source src="video1.mp4" type="video/mp4">
+  </video>
+  <div class="intro-scrim"></div>
+  <div class="intro-content">
+    <span class="intro-eyebrow">Bienvenidos a mis</span>
+    <h1 class="intro-title">XV Años</h1>
+    <p class="intro-sub">Candy Fernanda</p>
+    <button class="enter-btn" id="enter-btn">Entrar a la invitación</button>
+    <span class="intro-hint">Activa el sonido para una mejor experiencia</span>
+  </div>
+</div>
+
+<main>
+
+  <!-- ============================================================
+       HERO
+       ============================================================ -->
+  <section class="hero">
+    <!-- REEMPLAZAR AQUÍ: imagen de fondo del hero (foto de la quinceañera) -->
+    <div class="hero-bg-photo" style="background-image:url('foto1.png');"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-inner reveal in-view">
+      <span class="hero-eyebrow">Mis</span>
+      <h1 class="hero-name">XV <em>Años</em></h1>
+      <p class="hero-xv">Candy Fernanda Pérez López</p>
+     <!-- SECCIÓN FECHA CORREGIDA (Sin iconos rotos) -->
+      <div class="hero-date-pill" id="hero-date-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-13.9 2.2Z"/><path d="M9 22v-4h4"/></svg>
+        <span>25 de Julio de 2026</span>
+      </div>
+    </div>
+    <div class="scroll-cue"><span class="line"></span><span>Desliza</span></div>
+  </section>
+
+  <!-- ============================================================
+       PADRES (Estructura Premium y Notoria)
+       ============================================================ -->
+  <section class="section section-forest-texture reveal">
+    <div class="branch tl">
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 5 C30 8 45 20 50 45 C53 60 60 68 75 72" stroke="#c8a86a" stroke-width="1.1"/>
+        <ellipse cx="30" cy="14" rx="9" ry="4.5" fill="#4f6b4a" transform="rotate(30 30 14)"/>
+        <ellipse cx="44" cy="30" rx="8" ry="4" fill="#4f6b4a" transform="rotate(55 44 30)"/>
+        <ellipse cx="52" cy="50" rx="7" ry="3.5" fill="#4f6b4a" transform="rotate(80 52 50)"/>
+        <circle cx="68" cy="66" r="3" fill="#c8a86a"/>
+      </svg>
+    </div>
+    
+    <span class="eyebrow">Con la bendición de Dios</span>
+    <p class="invite-text">"Tengo el honor de invitarte a celebrar conmigo este día tan especial, en el que Dios me permite cumplir mis quince años."</p>
+    
+    <!-- Bloque de Padres Destacado -->
+    <div class="parents-container">
+      <h3 class="parents-title">Mis Padres</h3>
+      <div class="parents">
+        <span class="parent-name">Pablo de Jesús Pérez Domínguez</span>
+        <span class="parent-and">&amp;</span>
+        <span class="parent-name">Beatriz López De los Santos</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COUNTDOWN
+       ============================================================ -->
+  <section class="section reveal">
+    <span class="eyebrow">Falta muy poco</span>
+    <h2 class="countdown-title">El tiempo se acerca...</h2>
+    <div class="countdown">
+      <div class="count-box"><div class="count-num" id="cd-days">00</div><div class="count-label">Días</div></div>
+      <div class="count-box"><div class="count-num" id="cd-hours">00</div><div class="count-label">Horas</div></div>
+      <div class="count-box"><div class="count-num" id="cd-mins">00</div><div class="count-label">Min</div></div>
+      <div class="count-box"><div class="count-num" id="cd-secs">00</div><div class="count-label">Seg</div></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       DETALLES DEL EVENTO
+       ============================================================ -->
+  <section class="section section-forest-texture reveal">
+    <span class="eyebrow">Detalles del evento</span>
+    <h2 class="section-title">Te esperamos</h2>
+    <div class="event-cards">
+
+      <div class="event-card">
+        <div class="event-icon"><i class="fa-solid fa-place-of-worship" aria-hidden="true"></i></div>
+        <div class="event-name">Ceremonia Religiosa</div>
+        <div class="event-time">7:00 PM</div>
+        <div class="event-place">Parroquia De la Virgen María</div>
+        <a href="https://maps.app.goo.gl/4SjJCWVnXo1gdkJ48" target="_blank" class="btn-location">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+  Ver ubicación
+</a>
+      </div>
+
+      <div class="event-card">
+        <div class="event-icon"><i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i></div>
+        <div class="event-name">Recepción</div>
+        <div class="event-time">8:00 PM</div>
+        <div class="event-place">Salón Zafiro</div>
+        <a href="https://maps.app.goo.gl/GTjfW1jjSaAXAJ8JA" target="_blank" class="btn-location">
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+  Ver ubicación
+</a>
+      </div>
+
+    </div>
+
+    <div class="punct-block">
+      <i class="fa-regular fa-clock" aria-hidden="true"></i>Te pedimos, con mucho cariño, ser puntual. Comenzaremos a la hora indicada para poder disfrutar juntos cada momento de esta celebración desde el inicio.
+    </div>
+  </section>
+
+  <!-- ============================================================
+       VESTIMENTA
+       ============================================================ -->
+  <section class="section reveal">
+    <span class="eyebrow">Código de vestimenta</span>
+    <h2 class="section-title"><i class="fa-solid fa-user-tie" style="font-size:1.4rem; margin-right:.5rem; color:var(--gold);"></i>Formal</h2>
+    <p class="dress-text">Te invitamos a vestir de manera formal para acompañarnos en esta noche tan especial.</p>
+    <div class="dress-highlight">Los tonos verdes están reservados exclusivamente para la quinceañera</div>
+  </section>
+
+  <!-- ============================================================
+       GALERÍA
+       ============================================================ -->
+  <section class="section section-forest-texture reveal">
+    <span class="eyebrow">Un vistazo</span>
+    <h2 class="section-title">Mi sesión de fotos</h2>
+    <!-- REEMPLAZAR AQUÍ: sustituye cada URL por las fotos reales de la quinceañera -->
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="foto7.jpeg" alt="Foto 1 de la quinceañera" loading="lazy"></div>
+      <div class="gallery-item"><img src="foto3.jpeg" alt="Foto 2 de la quinceañera" loading="lazy"></div>
+      <div class="gallery-item"><img src="foto4.jpeg" alt="Foto 3 de la quinceañera" loading="lazy"></div>
+      <div class="gallery-item"><img src="foto5.jpeg" alt="Foto 4 de la quinceañera" loading="lazy"></div>
+      <div class="gallery-item"><img src="foto6.jpeg" alt="Foto 5 de la quinceañera" loading="lazy"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       REGALOS
+       ============================================================ -->
+  <section class="section reveal">
+    <span class="eyebrow">Regalos</span>
+    <div class="gift-icon"><i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i></div>
+    <h2 class="section-title">Lluvia de Sobres</h2>
+    <p class="gift-text">Tu presencia es el regalo más importante para mí. Sin embargo, si deseas hacerme un obsequio, la modalidad será mediante lluvia de sobres.</p>
+    <p class="gift-phrase">Gracias por ser parte de este sueño hecho realidad</p>
+  </section>
+
+  <!-- ============================================================
+       RSVP
+       ============================================================ -->
+  <section class="section section-forest-texture reveal">
+    <div class="branch br">
+      <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 5 C30 8 45 20 50 45 C53 60 60 68 75 72" stroke="#c8a86a" stroke-width="1.1"/>
+        <ellipse cx="30" cy="14" rx="9" ry="4.5" fill="#4f6b4a" transform="rotate(30 30 14)"/>
+        <ellipse cx="44" cy="30" rx="8" ry="4" fill="#4f6b4a" transform="rotate(55 44 30)"/>
+        <ellipse cx="52" cy="50" rx="7" ry="3.5" fill="#4f6b4a" transform="rotate(80 52 50)"/>
+        <circle cx="68" cy="66" r="3" fill="#c8a86a"/>
+      </svg>
+    </div>
+    <span class="eyebrow">Confirma tu asistencia</span>
+    <h2 class="section-title">¿Nos acompañas?</h2>
+    <p class="rsvp-deadline">Por favor confirma antes del <strong>15 de julio de 2026</strong></p>
+    <a class="whatsapp-btn" id="rsvp-link" href="#" target="_blank" rel="noopener">
+      <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+      Confirmar por WhatsApp
+    </a>
+  </section>
+
+  <footer>
+    <div class="footer-name">Candy Fernanda</div>
+    <div class="footer-sub">XV Años · 2026</div>
+  </footer>
+
+<!-- ============================================================
+     LIGHTBOX — Contenedor para ampliar fotos de la galería
+     ============================================================ -->
+<div id="gallery-lightbox" class="lightbox">
+  <button class="lightbox-close" aria-label="Cerrar imagen">&times;</button>
+  <img class="lightbox-img" src="" alt="Imagen ampliada">
+</div>
+
+</main>
+
+<!-- ======================================================================
+     BOTÓN FLOTANTE DE MÚSICA
+     Reemplaza el src del audio por tu pista de fondo.
+====================================================================== -->
+<button id="music-toggle" aria-label="Reproducir música de fondo">
+  <i class="fa-solid fa-music"></i>
+</button>
+<audio id="bg-audio" loop preload="none">
+  <source src="audio1.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ============================================================
+   1) CONFIGURACIÓN DE FECHA DEL EVENTO
+   ---------------------------------------------------------------
+   TODO: Ajusta el día y mes exactos. Está configurado de forma
+   provisional para finales de 2026 (30 de diciembre, 19:00 hrs).
+   Formato: new Date('YYYY-MM-DDTHH:mm:ss')
+   ============================================================ */
+const EVENT_DATE = new Date('2026-07-25T19:00:00');
+
+/* Texto amigable que se muestra en el "pill" del hero.
+   Actualízalo junto con EVENT_DATE cuando definas el día exacto. */
+document.getElementById('hero-date-pill').querySelector('span').textContent =
+  EVENT_DATE.toLocaleDateString('es-MX', { day:'numeric', month:'long', year:'numeric' });
+
+/* ============================================================
+   2) CONTADOR REGRESIVO
+   ============================================================ */
+function updateCountdown(){
+  const now = new Date();
+  let diff = EVENT_DATE - now;
+
+  const els = {
+    d: document.getElementById('cd-days'),
+    h: document.getElementById('cd-hours'),
+    m: document.getElementById('cd-mins'),
+    s: document.getElementById('cd-secs')
+  };
+
+  if (diff <= 0){
+    els.d.textContent = '00'; els.h.textContent = '00';
+    els.m.textContent = '00'; els.s.textContent = '00';
+    return;
+  }
+
+  const pad = n => String(n).padStart(2,'0');
+  const days = Math.floor(diff / (1000*60*60*24));
+  const hours = Math.floor((diff / (1000*60*60)) % 24);
+  const mins = Math.floor((diff / (1000*60)) % 60);
+  const secs = Math.floor((diff / 1000) % 60);
+
+  els.d.textContent = pad(days);
+  els.h.textContent = pad(hours);
+  els.m.textContent = pad(mins);
+  els.s.textContent = pad(secs);
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* ============================================================
+   3) RSVP -> WHATSAPP
+   ---------------------------------------------------------------
+   TODO: si el número cambia, actualízalo aquí (formato con
+   código de país, sin signos + ni espacios).
+   ============================================================ */
+const WHATSAPP_NUMBER = '529331232699'; // 52 = código de México
+const WHATSAPP_MESSAGE = '¡Hola! Confirmo mi asistencia a los XV de Candy...';
+document.getElementById('rsvp-link').href =
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+
+/* ============================================================
+   4) INTRO: VIDEO DE BIENVENIDA
+   ============================================================ */
+const introOverlay = document.getElementById('intro-overlay');
+const introVideo = document.getElementById('intro-video');
+const enterBtn = document.getElementById('enter-btn');
+
+function closeIntro(){
+  introOverlay.classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+enterBtn.addEventListener('click', closeIntro);
+
+/* Si el video termina de reproducirse solo, cerramos la intro */
+introVideo.addEventListener('ended', closeIntro);
+
+/* Bloquea el scroll de fondo mientras se ve la intro */
+document.body.style.overflow = 'hidden';
+
+/* Si el navegador bloquea el autoplay con audio, lo intentamos en silencio */
+introVideo.play().catch(() => { /* el usuario deberá pulsar "Entrar" */ });
+
+/* ============================================================
+   5) SCROLL REVEAL — animaciones de entrada al hacer scroll
+   ============================================================ */
+const revealEls = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting){
+      entry.target.classList.add('in-view');
+      io.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.18 });
+revealEls.forEach(el => io.observe(el));
+
+/* ============================================================
+   6) PARTÍCULAS — hojas cayendo en canvas (fondo ambiental)
+   ============================================================ */
+(function(){
+  const canvas = document.getElementById('leaf-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, leaves = [];
+  const LEAF_COLORS = ['#4f6b4a', '#7c9473', '#c8a86a', '#24402e'];
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function makeLeaf(){
+    return {
+      x: Math.random() * W,
+      y: -20 - Math.random() * H,
+      size: 6 + Math.random() * 8,
+      speedY: 0.4 + Math.random() * 0.7,
+      speedX: (Math.random() - 0.5) * 0.6,
+      rot: Math.random() * Math.PI * 2,
+      rotSpeed: (Math.random() - 0.5) * 0.02,
+      sway: Math.random() * Math.PI * 2,
+      swaySpeed: 0.01 + Math.random() * 0.015,
+      color: LEAF_COLORS[Math.floor(Math.random() * LEAF_COLORS.length)],
+      opacity: 0.35 + Math.random() * 0.4
+    };
+  }
+
+  const LEAF_COUNT = window.innerWidth < 640 ? 14 : 24;
+  for (let i=0; i<LEAF_COUNT; i++) leaves.push(makeLeaf());
+
+  function drawLeaf(l){
+    ctx.save();
+    ctx.translate(l.x, l.y);
+    ctx.rotate(l.rot);
+    ctx.globalAlpha = l.opacity;
+    ctx.fillStyle = l.color;
+    ctx.beginPath();
+    ctx.moveTo(0, -l.size);
+    ctx.bezierCurveTo(l.size*0.8, -l.size*0.4, l.size*0.8, l.size*0.4, 0, l.size);
+    ctx.bezierCurveTo(-l.size*0.8, l.size*0.4, -l.size*0.8, -l.size*0.4, 0, -l.size);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function tick(){
+    ctx.clearRect(0, 0, W, H);
+    leaves.forEach(l => {
+      l.y += l.speedY;
+      l.sway += l.swaySpeed;
+      l.x += l.speedX + Math.sin(l.sway) * 0.4;
+      l.rot += l.rotSpeed;
+      if (l.y > H + 20){
+        Object.assign(l, makeLeaf(), { y: -20 });
+      }
+      drawLeaf(l);
+    });
+    requestAnimationFrame(tick);
+  }
+
+  if (!reduceMotion){
+    tick();
+  } else {
+    /* Con movimiento reducido, dibujamos las hojas una sola vez, estáticas */
+    leaves.forEach(drawLeaf);
+  }
+})();
+
+/* ======================================================================
+   6. BOTÓN FLOTANTE DE MÚSICA DE FONDO
+====================================================================== */
+const musicBtn = document.getElementById('music-toggle');
+const bgAudio = document.getElementById('bg-audio');
+let isPlaying = false;
+
+musicBtn.addEventListener('click', () => {
+  if (isPlaying){
+    bgAudio.pause();
+    musicBtn.classList.remove('playing');
+    musicBtn.innerHTML = '<i class="fa-solid fa-music"></i>';
+  } else {
+    bgAudio.play().catch(() => {});
+    musicBtn.classList.add('playing');
+    musicBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+  }
+  isPlaying = !isPlaying;
+});
+
+/* ============================================================
+   LÓGICA DE LA GALERÍA INTERACTIVA (Lightbox)
+   ============================================================ */
+const galleryItems = document.querySelectorAll('.gallery-item img');
+const lightbox = document.getElementById('gallery-lightbox');
+const lightboxImg = lightbox.querySelector('.lightbox-img');
+const lightboxClose = lightbox.querySelector('.lightbox-close');
+
+// Abrir Lightbox al hacer click en una imagen
+galleryItems.forEach(img => {
+  img.addEventListener('click', () => {
+    lightboxImg.src = img.src;
+    lightboxImg.alt = img.alt;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden'; // Bloquea el scroll de la invitación al ver la foto
+  });
+});
+
+// Función para cerrar el Lightbox
+function closeLightbox() {
+  lightbox.classList.remove('active');
+  // Devolvemos el scroll solo si la intro de bienvenida también está cerrada
+  if(!document.getElementById('intro-overlay').classList.contains('hidden')) return;
+  document.body.style.overflow = '';
+}
+
+// Cerrar al hacer click en la 'X'
+lightboxClose.addEventListener('click', closeLightbox);
+
+// Cerrar también al hacer click en el fondo oscuro
+lightbox.addEventListener('click', (e) => {
+  if (e.target === lightbox) {
+    closeLightbox();
+  }
+});
+
+// Cerrar con la tecla Escape (para usuarios en Computadora)
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+    closeLightbox();
+  }
+});
+
+</script>
+
+</body>
+</html>
