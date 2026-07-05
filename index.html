@@ -143,22 +143,26 @@ a{ color:inherit; text-decoration:none; }
   pointer-events: none;
 }
 
-/* Video de fondo -> SUSTITUIR src en el <video> más abajo en el HTML */
-.intro-video{
+/* 1. Ajuste del video */
+.intro-video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.38;
-  filter: saturate(0.8) brightness(0.7);
+  /* Subimos la opacidad de 0.38 a 0.75 */
+  opacity: 0.75; 
+  /* Restauramos el color y el brillo original de tu toma */
+  filter: saturate(1) brightness(0.95); 
 }
 
-.intro-overlay{
+/* 2. Ajuste de la sombra superpuesta */
+.intro-overlay {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 40%, rgba(14,35,24,0.35), rgba(7,16,12,0.92) 75%);
+    /* Reducimos la intensidad del negro en las orillas (de 0.92 a 0.55) */
+    radial-gradient(circle at 50% 40%, rgba(14,35,24,0.15), rgba(7,16,12,0.55) 75%);
 }
 
 .intro-contenido{
